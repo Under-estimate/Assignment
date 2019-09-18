@@ -34,26 +34,32 @@ public class Base extends javax.swing.JPanel {
         Encoded = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setLayout(new java.awt.GridBagLayout());
 
         Origin.setColumns(20);
         Origin.setRows(5);
-        Origin.setToolTipText("Original Text");
+        Origin.setToolTipText("");
         Origin.setName("Origin"); // NOI18N
         jScrollPane2.setViewportView(Origin);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         add(jScrollPane2, gridBagConstraints);
 
         Encoded.setColumns(20);
         Encoded.setRows(5);
-        Encoded.setToolTipText("Encoded Text");
+        Encoded.setToolTipText("");
         Encoded.setName("Encoded"); // NOI18N
         jScrollPane1.setViewportView(Encoded);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         add(jScrollPane1, gridBagConstraints);
 
@@ -65,7 +71,7 @@ public class Base extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         add(jButton1, gridBagConstraints);
 
@@ -77,9 +83,15 @@ public class Base extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         add(jButton2, gridBagConstraints);
+
+        jLabel1.setText("Original Text");
+        add(jLabel1, new java.awt.GridBagConstraints());
+
+        jLabel2.setText("Encoded Text");
+        add(jLabel2, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
@@ -100,6 +112,8 @@ public class Base extends javax.swing.JPanel {
     private javax.swing.JTextArea Origin;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables

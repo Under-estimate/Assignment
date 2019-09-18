@@ -1,20 +1,16 @@
 package com.zjs.assignment;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
-import com.google.zxing.qrcode.encoder.*;
 import com.zjs.toolbox.Toolbox;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.nio.file.FileSystems;
-import javax.imageio.ImageIO;
+import java.util.HashMap;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -63,9 +59,32 @@ public class QRCode extends javax.swing.JPanel {
         try{
             BufferedReader br=new BufferedReader(new FileReader(jfc.getSelectedFile()));
             String s=br.readLine();
-            BitMatrix bm=new QRCodeWriter().encode(s, BarcodeFormat.QR_CODE, 500, 500);
+            if(br.readLine()!=null)JOptionPane.showMessageDialog(getParent().getParent().getParent().getParent(),"Selected text file contains more than one row.\nOnly the first row will be read.", "Warning", JOptionPane.WARNING_MESSAGE);
+            br.close();
+            HashMap hm=new HashMap();
+            BitMatrix bm=null;
+            if(s.length()!=s.getBytes().length){
+                String coding=JOptionPane.showInputDialog(getParent().getParent().getParent().getParent(),"Detected letter(s) that is(are) not ASCII letter(s),\nPlease input file coding type.", "Input file coding type", JOptionPane.QUESTION_MESSAGE);
+                while(true){
+                    if(coding==null)return;
+                    hm.put(EncodeHintType.CHARACTER_SET, coding);
+                    hm.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.Q);
+                    try{
+                        bm=new MultiFormatWriter().encode(s, BarcodeFormat.QR_CODE, 500, 500,hm);
+                    }catch(Exception e){
+                        int ch=JOptionPane.showConfirmDialog(getParent().getParent().getParent().getParent(), "Unsupported coding:"+coding+".\nTry again?", "Unsupported coding", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+                        if(ch==JOptionPane.NO_OPTION||ch==JOptionPane.CLOSED_OPTION)return;
+                        coding=JOptionPane.showInputDialog(getParent().getParent().getParent().getParent(),"Please input file coding type.", "Input file coding type", JOptionPane.QUESTION_MESSAGE);
+                        if(coding==null)return;
+                        if(ch==JOptionPane.YES_OPTION)continue;
+                    }
+                    break;
+                }
+            }else{
+                bm=new MultiFormatWriter().encode(s, BarcodeFormat.QR_CODE, 500, 500);
+            }
             MatrixToImageWriter.writeToPath(bm, "JPG", FileSystems.getDefault().getPath("D:\\output.jpg"));
-            JOptionPane.showMessageDialog(getParent().getParent().getParent().getParent(),"Successfully generated QRCode at D:\\output.jpg", "Success", JOptionPane.INFORMATION_MESSAGE);
+            Runtime.getRuntime().exec("explorer.exe D:\\output.jpg");
         }catch(Exception e){
             Toolbox.ExceptionHandler(e);
         }
